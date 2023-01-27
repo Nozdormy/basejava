@@ -19,12 +19,11 @@ public class ArrayStorage {
 
     public void update(Resume resume) {
         int index = findIndex(resume.uuid);
-        if(index != -1) {
+        if (index != -1) {
             storage[index] = resume;
             System.out.println(storage[index]);
-        } else {
-            System.out.println("Ошибка");
         }
+        System.out.println("Ошибка");
     }
 
     public void save(Resume r) {
@@ -40,18 +39,18 @@ public class ArrayStorage {
 
     public Resume get(String uuid) {
         int index = findIndex(uuid);
-        if(index != -1) {
+        if (index != -1) {
             return storage[index];
-        } else {
-            System.out.println("Запись не найдена");
-            return null;
         }
+        System.out.println("Запись не найдена");
+        return null;
     }
 
     public void delete(String uuid) {
         int index = findIndex(uuid);
         if (index != -1) {
             storage[index] = storage[size - 1];
+            storage[size - 1] = null;
             size--;
             return;
         }
