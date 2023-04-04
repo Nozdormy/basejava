@@ -94,7 +94,7 @@ class AbstractArrayStorageTest {
                 STORAGE.save(new Resume());
             }
         } catch (StorageException e) {
-            System.out.println(e.getMessage());
+            Assertions.fail();
         }
 
         Assertions.assertThrows(StorageException.class, () -> {
@@ -104,8 +104,8 @@ class AbstractArrayStorageTest {
 
     @Test
     void getAll() {
-        Resume[] actual = new Resume[]{RESUME_1, RESUME_2, RESUME_3};
-        Assertions.assertArrayEquals(actual, STORAGE.getAll());
+        Resume[] expected = new Resume[]{RESUME_1, RESUME_2, RESUME_3};
+        Assertions.assertArrayEquals(expected, STORAGE.getAll());
     }
 
     @Test
