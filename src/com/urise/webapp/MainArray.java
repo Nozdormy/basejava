@@ -1,9 +1,15 @@
+package com.urise.webapp;
+
+import com.urise.webapp.model.Resume;
+import com.urise.webapp.storage.ArrayStorage;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
 
 /**
- * Interactive test for ArrayStorage implementation
+ * Interactive test for storage.webapp.com.urise.ArrayStorage implementation
  * (just run, no need to understand)
  */
 public class MainArray {
@@ -31,8 +37,7 @@ public class MainArray {
                     System.out.println(ARRAY_STORAGE.size());
                     break;
                 case "save":
-                    r = new Resume();
-                    r.uuid = uuid;
+                    r = new Resume(uuid);
                     ARRAY_STORAGE.save(r);
                     printAll();
                     break;
@@ -57,9 +62,9 @@ public class MainArray {
     }
 
     static void printAll() {
-        Resume[] all = ARRAY_STORAGE.getAll();
+        List<Resume> all = ARRAY_STORAGE.getAllSorted();
         System.out.println("----------------------------");
-        if (all.length == 0) {
+        if (all.size() == 0) {
             System.out.println("Empty");
         } else {
             for (Resume r : all) {
