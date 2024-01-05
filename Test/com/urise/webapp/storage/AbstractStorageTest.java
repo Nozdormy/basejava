@@ -3,15 +3,17 @@ package com.urise.webapp.storage;
 import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.model.Resume;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class AbstractStorageTest {
+public abstract class AbstractStorageTest {
 
     protected final Storage STORAGE;
 
@@ -24,10 +26,10 @@ public class AbstractStorageTest {
     private static final String UUID_3 = "uuid_3";
     private static final String UUID_4 = "uuid_4";
 
-    private static final Resume RESUME_1 = new Resume(UUID_1, "Ivan");
-    private static final Resume RESUME_2 = new Resume(UUID_2, "Vov");
-    private static final Resume RESUME_3 = new Resume(UUID_3, "Sew");
-    private static final Resume RESUME_4 = new Resume(UUID_4, "rew");
+    private static final Resume RESUME_1 = new Resume(UUID_1, "Name1");
+    private static final Resume RESUME_2 = new Resume(UUID_2, "Name2");
+    private static final Resume RESUME_3 = new Resume(UUID_3, "Name3");
+    private static final Resume RESUME_4 = new Resume(UUID_4, "Name4");
 
     @BeforeEach
     void setUp() {
@@ -41,7 +43,6 @@ public class AbstractStorageTest {
     void clear() {
         STORAGE.clear();
         assertSize(0);
-        assertIterableEquals(new ArrayList<>(), STORAGE.getAllSorted());
     }
 
     @Test
@@ -93,13 +94,11 @@ public class AbstractStorageTest {
     }
 
     @Test
-    void getAll() {
-        ArrayList<Resume> expectedList = new ArrayList<>();
-        expectedList.add(RESUME_1);
-        expectedList.add(RESUME_2);
-        expectedList.add(RESUME_3);
-        assertIterableEquals(expectedList, STORAGE.getAllSorted());
-        assertSize(3);
+    void getAllSorted() {
+        Resume[] test = new Resume[] {RESUME_1, RESUME_2, RESUME_3};
+        Arrays.sort(test, AbstractStorage.FULLNAME_COMPARATOR);
+        List<Resume> list = Arrays.asList(test);
+        assertEquals(list, STORAGE.getAllSorted());
     }
 
     @Test
