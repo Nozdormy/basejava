@@ -7,7 +7,7 @@ import java.util.List;
 
 public class ListStorage extends AbstractStorage<Integer> {
 
-    private List<Resume> storage = new ArrayList<>();
+    protected final List<Resume> storage = new ArrayList<>();
 
     @Override
     protected List<Resume> doCopyAll() {

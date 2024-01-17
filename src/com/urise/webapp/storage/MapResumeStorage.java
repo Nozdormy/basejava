@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class MapResumeStorage extends AbstractStorage<Resume> {
 
-    private Map<String, Resume> storage = new HashMap<>();
+    protected final Map<String, Resume> storage = new HashMap<>();
 
     @Override
     protected boolean isExist(Resume resume) {

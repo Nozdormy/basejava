@@ -1,35 +1,23 @@
 package com.urise.webapp.model;
 
-import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 public class Organization {
     private final Link homePage;
-    private final LocalDate startDate;
-    private final LocalDate endDate;
-    private final String title;
-    private final String description;
+    private final List<Period> periods;
 
-    public Organization(String name, String url, LocalDate startDate, LocalDate endDate, String title, String description) {
-        Objects.requireNonNull(startDate, "startDate must not de null");
-        Objects.requireNonNull(endDate, "endDate must not de null");
-        Objects.requireNonNull(title, "title must not de null");
+    public Organization(String name, String url, List<Period> periods) {
         this.homePage = new Link(name, url);
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.title = title;
-        this.description = description;
+        this.periods = periods;
     }
 
-    @Override
-    public String toString() {
-        return "Organization{" +
-                "homePage=" + homePage +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                '}';
+    public Link getHomePage() {
+        return homePage;
+    }
+
+    public List<Period> getPeriods() {
+        return periods;
     }
 
     @Override
@@ -39,20 +27,20 @@ public class Organization {
 
         Organization that = (Organization) o;
 
-        if (!homePage.equals(that.homePage)) return false;
-        if (!startDate.equals(that.startDate)) return false;
-        if (!endDate.equals(that.endDate)) return false;
-        if (!title.equals(that.title)) return false;
-        return Objects.equals(description, that.description);
+        if (!Objects.equals(homePage, that.homePage))
+            return false;
+        return Objects.equals(periods, that.periods);
     }
 
     @Override
     public int hashCode() {
-        int result = homePage.hashCode();
-        result = 31 * result + startDate.hashCode();
-        result = 31 * result + endDate.hashCode();
-        result = 31 * result + title.hashCode();
-        result = 31 * result + (description != null ? description.hashCode() : 0);
+        int result = homePage != null ? homePage.hashCode() : 0;
+        result = 31 * result + (periods != null ? periods.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "homePage = " + homePage + ", periods = " + periods;
     }
 }

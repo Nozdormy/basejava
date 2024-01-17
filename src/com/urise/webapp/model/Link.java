@@ -3,17 +3,17 @@ package com.urise.webapp.model;
 import java.util.Objects;
 
 public class Link {
-    private final String name;
+    private final String title;
     private final String url;
 
-    public Link(String name, String url) {
-        Objects.requireNonNull(name,"name must not de null");
-        this.name = name;
+    public Link(String title, String url) {
+        Objects.requireNonNull(title, "title must not de null");
+        this.title = title;
         this.url = url;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
     public String getUrl() {
@@ -22,7 +22,7 @@ public class Link {
 
     @Override
     public String toString() {
-        return "Link{" + name + ',' + url + '}';
+        return "Link{ " + title + ',' + url + '}';
     }
 
     @Override
@@ -32,13 +32,13 @@ public class Link {
 
         Link link = (Link) o;
 
-        if (!name.equals(link.name)) return false;
+        if (!title.equals(link.title)) return false;
         return Objects.equals(url, link.url);
     }
 
     @Override
     public int hashCode() {
-        int result = name.hashCode();
+        int result = title.hashCode();
         result = 31 * result + (url != null ? url.hashCode() : 0);
         return result;
     }
