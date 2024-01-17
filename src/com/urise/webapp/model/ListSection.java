@@ -27,11 +27,11 @@ public class ListSection extends Section {
 
         ListSection that = (ListSection) o;
 
-        return Objects.equals(items, that.items);
+        return items.equals(that.items);
     }
 
     @Override
     public int hashCode() {
-        return items != null ? items.hashCode() : 0;
+        return items.hashCode();
     }
 }
