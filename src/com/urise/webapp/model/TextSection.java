@@ -26,11 +26,11 @@ public class TextSection extends Section {
 
         TextSection that = (TextSection) o;
 
-        return Objects.equals(content, that.content);
+        return content.equals(that.content);
     }
 
     @Override
     public int hashCode() {
-        return content != null ? content.hashCode() : 0;
+        return content.hashCode();
     }
 }
