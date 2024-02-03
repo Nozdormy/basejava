@@ -15,9 +15,9 @@ public class MainFile {
             throw new RuntimeException("Error", e);
         }
 
-        File dir = new File("C:\\StartJava\\new\\basejava\\src\\com\\urise\\webapp");
+        File dir = new File(".\\src\\com\\urise\\webapp");
         System.out.println();
-        printDirectory(dir);
+        printDirectory(dir, "");
 
         try (FileInputStream fis = new FileInputStream(filePath)) {
             System.out.println(fis.read());
@@ -26,16 +26,16 @@ public class MainFile {
         }
     }
 
-    public static void printDirectory(File dir) {
+    public static void printDirectory(File dir, String offset) {
         File[] files = dir.listFiles();
 
         if (dir != null) {
             for (File file : files) {
                 if (file.isFile()) {
-                    System.out.println("File: " + file.getName());
+                    System.out.println(offset + "File: " + file.getName());
                 } else if (file.isDirectory()) {
-                    System.out.println("\nDirectory: " + file.getName());
-                    printDirectory(file);
+                    System.out.println(offset + "\nDirectory: " + file.getName());
+                    printDirectory(file, offset + "    ");
                 }
             }
         }
