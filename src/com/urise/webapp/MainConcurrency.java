@@ -1,7 +1,9 @@
 package com.urise.webapp;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class MainConcurrency {
 
@@ -22,31 +24,46 @@ public class MainConcurrency {
                 Thread.currentThread().getState())).start();
 
         System.out.println(thread0.getState());
-        MainConcurrency mainConcurrency = new MainConcurrency();
+        final MainConcurrency mainConcurrency = new MainConcurrency();
 
-        List<Thread> threads = new ArrayList<>(THREADS_NUMBERS);
+        // Замена на конкаренси
+        CountDownLatch latch = new CountDownLatch(THREADS_NUMBERS);
+        ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+
+        //List<Thread> threads = new ArrayList<>(THREADS_NUMBERS);
+
         for (int i = 0; i < THREADS_NUMBERS; i++) {
-            Thread thread = new Thread(() -> {
+            executorService.submit(() -> {
+            /*Thread thread = new Thread(() -> {*/
                 for (int j = 0; j < 100; j++) {
                     mainConcurrency.inc();
                 }
+                latch.countDown();
             });
-            thread.start();
-            threads.add(thread);
+            /*thread.start();
+            threads.add(thread);*/
         }
-        threads.forEach(t -> {
+/*        threads.forEach(t -> {
             try {
                 t.join();
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-        });
+        });*/
+
+        try {
+            latch.await(5, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
         System.out.println(counter);
+        executorService.shutdown();
 
         final String lock1 = "lock1";
         final String lock2 = "lock2";
-        deadlock(lock1, lock2);
-        deadlock(lock2, lock1);
+        /*deadlock(lock1, lock2);
+        deadlock(lock2, lock1);*/
     }
 
     private static void deadlock(String lock1, String lock2) {
