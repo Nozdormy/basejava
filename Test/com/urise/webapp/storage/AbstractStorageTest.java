@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,10 +25,10 @@ public abstract class AbstractStorageTest {
         this.STORAGE = storage;
     }
 
-    private static final String UUID_1 = "uuid_1";
-    private static final String UUID_2 = "uuid_2";
-    private static final String UUID_3 = "uuid_3";
-    private static final String UUID_4 = "uuid_4";
+    private static final String UUID_1 = UUID.randomUUID().toString();
+    private static final String UUID_2 = UUID.randomUUID().toString();
+    private static final String UUID_3 = UUID.randomUUID().toString();
+    private static final String UUID_4 = UUID.randomUUID().toString();
 
     private static final Resume RESUME_1 = new Resume(UUID_1, "Name1");
     private static final Resume RESUME_2 = new Resume(UUID_2, "Name2");
@@ -98,7 +99,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     void getAllSorted() {
-        Resume[] test = new Resume[] {RESUME_1, RESUME_2, RESUME_3};
+        Resume[] test = new Resume[]{RESUME_1, RESUME_2, RESUME_3};
         Arrays.sort(test, AbstractStorage.FULLNAME_COMPARATOR);
         List<Resume> list = Arrays.asList(test);
         assertEquals(list, STORAGE.getAllSorted());
