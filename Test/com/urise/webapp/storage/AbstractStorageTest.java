@@ -4,13 +4,13 @@ import com.urise.webapp.Config;
 import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.model.Resume;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -99,10 +99,11 @@ public abstract class AbstractStorageTest {
 
     @Test
     void getAllSorted() {
-        Resume[] test = new Resume[]{RESUME_1, RESUME_2, RESUME_3};
-        Arrays.sort(test, AbstractStorage.FULLNAME_COMPARATOR);
-        List<Resume> list = Arrays.asList(test);
-        assertEquals(list, STORAGE.getAllSorted());
+        List<Resume> list = STORAGE.getAllSorted();
+        assertEquals(3, list.size());
+        List<Resume> sortedResumes = Arrays.asList(RESUME_1, RESUME_2, RESUME_3);
+        Collections.sort(sortedResumes);
+        assertEquals(sortedResumes, list);
     }
 
     @Test
