@@ -3,9 +3,9 @@ package com.urise.webapp.storage;
 import com.urise.webapp.exception.*;
 import com.urise.webapp.model.Resume;
 
-import java.util.*;
+import java.util.Arrays;
 
-public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
+public abstract class AbstractArrayStorage implements Storage {
     protected static final int STORAGE_LIMIT = 10_000;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
@@ -15,13 +15,31 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
         size = 0;
     }
 
-    public int size() {
-        return size;
+    public void update(Resume r) {
+        int index = findIndex(r.getUuid());
+        if (index < 0) {
+            throw new NotExistStorageException(r.getUuid());
+        } else {
+            storage[index] = r;
+        }
     }
 
-    @Override
-    protected void doSave(Resume r, Integer index) {
-        if (size >= STORAGE_LIMIT) {
+    public void delete(String uuid) {
+        int index = findIndex(uuid);
+        if (index < 0) {
+            throw new NotExistStorageException(uuid);
+        } else {
+            fillDeletedElement(index);
+            storage[size - 1] = null;
+            size--;
+        }
+    }
+
+    public void save(Resume r) {
+        int index = findIndex(r.getUuid());
+        if (index >= 0) {
+            throw new ExistStorageException(r.getUuid());
+        } else if (size == STORAGE_LIMIT) {
             throw new StorageException("Storage overflow", r.getUuid());
         } else {
             insertElement(r, index);
@@ -29,32 +47,23 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
         }
     }
 
-    @Override
-    protected Resume doGet(Integer index) {
+    public Resume[] getAll() {
+        return Arrays.copyOfRange(storage, 0, size);
+    }
+
+    public int size() {
+        return size;
+    }
+
+    public Resume get(String uuid) {
+        int index = findIndex(uuid);
+        if (index < 0) {
+            throw new NotExistStorageException(uuid);
+        }
         return storage[index];
     }
 
-    @Override
-    protected void doDelete(Integer index) {
-        fillDeletedElement(index);
-        storage[size - 1] = null;
-        size--;
-    }
-
-    @Override
-    protected void doUpdate(Resume r, Integer index) {
-        storage[index] = r;
-    }
-
-    @Override
-    protected boolean isExist(Integer index) {
-        return index >= 0;
-    }
-
-    @Override
-    protected List<Resume> doCopyAll() {
-        return Arrays.asList(Arrays.copyOfRange(storage, 0, size));
-    }
+    protected abstract int findIndex(String uuid);
 
     protected abstract void insertElement(Resume r, int index);
 
